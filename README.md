@@ -8,3 +8,7 @@
 
 <h2>Available Script</h2>
 
+<h5>
+  <i>Requires <code>live-server</code> installation.</i>
+</h5>
+
