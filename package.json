@@ -1,0 +1,13 @@
+{
+  "name": "flappy-bird",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+  },
+  "author": "vitormotag",
+  "license": "ISC",
+  "dev-dependencies": {
+    "live-server": "^1.2.1"
+  }
+}
