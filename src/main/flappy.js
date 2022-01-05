@@ -1,6 +1,6 @@
-class Barrier {
+class Obstacle {
     constructor(reverse = false) {
-        this.element = newElement('div', 'barrier')
+        this.element = newElement('div', 'obstacle')
 
         const border = newElement('div', 'border')
         const body = newElement('div', 'body')
@@ -12,12 +12,12 @@ class Barrier {
     }
 }
 
-class PairOfBarriers {
+class PairOfObstacle {
     constructor(height, opening, x) {
-        this.element = newElement('div', 'pair-of-barriers')
+        this.element = newElement('div', 'pair-of-obstacles')
 
-        this.top = new Barrier(true)
-        this.bottom = new Barrier(false)
+        this.top = new Obstacle(true)
+        this.bottom = new Obstacle(false)
 
         this.element.appendChild(this.top.element)
         this.element.appendChild(this.bottom.element)
@@ -40,13 +40,13 @@ class PairOfBarriers {
     }
 }
 
-class Barriers {
+class Obstacles {
     constructor(height, width, opening, space, pointNotify) {
         this.pairs = [
-            new PairOfBarriers(height, opening, width),
-            new PairOfBarriers(height, opening, width + space),
-            new PairOfBarriers(height, opening, width + space * 2),
-            new PairOfBarriers(height, opening, width + space * 3),
+            new PairOfObstacle(height, opening, width),
+            new PairOfObstacle(height, opening, width + space),
+            new PairOfObstacle(height, opening, width + space * 2),
+            new PairOfObstacle(height, opening, width + space * 3),
         ]
 
         const displacement = 4
@@ -134,14 +134,14 @@ function overlap(elementA, elementB) {
     return flat && upright
 }
 
-function crashed(bird, barriers) {
+function crashed(bird, obstacles) {
     let crashed = false
-    barriers.pairs.forEach((pairOfBarriers) => {
+    obstacles.pairs.forEach((pairOfObstacles) => {
         if (!crashed) {
-            const topBarrier = pairOfBarriers.top.element
-            const bottomBarrier = pairOfBarriers.bottom.element
+            const topObstacle = pairOfObstacles.top.element
+            const bottomObstacle = pairOfObstacles.bottom.element
 
-            crashed = overlap(bird.element, topBarrier) || overlap(bird.element, bottomBarrier)
+            crashed = overlap(bird.element, topObstacle) || overlap(bird.element, bottomObstacle)
         }
     })
     return crashed
@@ -155,20 +155,20 @@ class FlappyBird {
         const width = gameArea.clientWidth
 
         const progress = new Progress()
-        const barriers = new Barriers(height, width, 200, 400, () => progress.updatePoints(++points))
+        const obstacles = new Obstacles(height, width, 200, 400, () => progress.updatePoints(++points))
         const bird = new Bird(height)
         const finish = new Finish()
 
         gameArea.appendChild(progress.element)
         gameArea.appendChild(bird.element)
-        barriers.pairs.forEach((pair) => gameArea.appendChild(pair.element))
+        obstacles.pairs.forEach((pair) => gameArea.appendChild(pair.element))
 
         this.start = () => {
             const time = setInterval(() => {
-                barriers.animate()
+                obstacles.animate()
                 bird.animate()
 
-                if (crashed(bird, barriers)) {
+                if (crashed(bird, obstacles)) {
                     gameArea.appendChild(finish.element)
                     finish.element.appendChild(finish.button)
                     clearInterval(time)
